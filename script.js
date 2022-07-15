@@ -17,8 +17,8 @@ const winnerText = document.querySelector('.winner h2')
 
 startBtn.addEventListener('click', openModal);
 newGameBtn.addEventListener('click', createBlock);
-// restartBtn.addEventListener('click', restartGame);
-// quitGame.addEventListener('click', gameQuit);
+restartBtn.addEventListener('click', restartGame);
+quitGame.addEventListener('click', gameQuit);
 controlBtn.style.display = 'none';
 
 
@@ -50,11 +50,25 @@ function createBlock(e) {
 
         }
     }
+    setInterval(() => {
+
+        if (n == 3) {
+            title.style.fontSize = "1rem";
+        } else if (n == 4) {
+            title.style.fontSize = "1.2rem";
+        } else if (n == 5) {
+            title.style.fontSize = "1.6rem";
+        } else if (n == 6) {
+            title.style.fontSize = "2rem";
+        } else if (n == 7) {
+            title.style.fontSize = "2.2rem";
+        }
+    }, 0);
 
     modalWindow.style.display = 'none';
     input.value = '';
     title.innerHTML = `Player X's Start`;
-    title.style.fontSize = '23px';
+    title.style.fontSize = '1.2rem';
     controlBtn.style.display = 'initial';
 }
 
@@ -67,14 +81,16 @@ gameArea.onclick = function (e) {
     if (e.target.classList == "block") {
         if (qayl % 2 == 0) {
             e.target.innerHTML = 'X';
-            title.innerHTML = `Player O's turn`;
+            title.innerHTML = `Player 0's turn`;
         } else {
-            e.target.innerHTML = 'O'
+            e.target.innerHTML = '0'
             title.innerHTML = `Player X's turn`;
         }
         qayl++;
+
+        checkWinner();
+
     }
-    checkWinner();
 }
 
 
@@ -95,16 +111,19 @@ function checkWinner() {
                     winnerWindow.classList.add('active');
                     winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is X `;
                 }
-            } else if (result[i][j].innerHTML == 'O') {
+            } else if (result[i][j].innerHTML == '0') {
                 countY++;
                 if (result.length == countY) {
                     winnerWindow.classList.add('active');
-                    winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is O `;
+                    winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is 0 `;
                 }
             }
-
         }
     }
+
+
+
+
     for (var j = 0; j < result.length; j++) {
         var countX = 0, countY = 0;
         for (var i = 0; i < result.length; i++) {
@@ -114,14 +133,13 @@ function checkWinner() {
                     winnerWindow.classList.add('active');
                     winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is X `;
                 }
-            } else if (result[i][j].innerHTML == 'O') {
+            } else if (result[i][j].innerHTML == '0') {
                 countY++;
                 if (result.length == countY) {
                     winnerWindow.classList.add('active');
-                    winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is O `;
+                    winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is 0 `;
                 }
             }
-
         }
     }
 
@@ -130,15 +148,44 @@ function checkWinner() {
         if (result[i][i].innerHTML == 'X') {
             countX++;
             if (result.length == countX) {
-            winnerWindow.classList.add('active');
-            winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is X `;
+                winnerWindow.classList.add('active');
+                winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is X `;
             }
         } else if (result[i][i].innerHTML == '0') {
-                countY++;
-                if (result.length == countY) {
+            countY++;
+            if (result.length == countY) {
                 winnerWindow.classList.add('active');
                 winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is 0 `;
+            }
         }
     }
+
+    var countX = 0, countY = 0;
+    for (var j = 0; j < result.length; j++) {
+        if (result[j][result.length - 1 - j].innerHTML == 'X') {
+            countX++;
+            if (result.length == countX) {
+                winnerWindow.classList.add('active');
+                winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is X `;
+            }
+        } else if (result[j][result.length - 1 - j].innerHTML == '0') {
+            countY++;
+            if (result.length == countY) {
+                winnerWindow.classList.add('active');
+                winnerText.innerHTML = ` <i class="fa-solid fa-trophy"></i> Winner is 0 `;
+            }
+        }
     }
+
+}
+
+
+
+function restartGame() {
+    location.reload()
+}
+
+function gameQuit() {
+    window.close()
+    location.reload()
 }
